@@ -29,7 +29,7 @@ namespace Net5.JWT.Models.GetDataDto
         [StringLength(5000)]
         public string ImageUrl { get; set; }
 
-        public int ShelterId { get; set; }
+        public int? ShelterId { get; set; }
 
 
         [JsonExtensionData]

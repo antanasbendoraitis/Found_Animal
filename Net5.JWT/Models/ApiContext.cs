@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Net5.JWT.Models.GetDataDto;
 using System;
 using System.Collections.Generic;
@@ -26,7 +27,7 @@ namespace Net5.JWT.Models
             modelBuilder.Entity<User>(entity => { entity.HasIndex(u => u.Email).IsUnique(); });
             modelBuilder.Entity<Found_Animal>().Property(f => f.ShelterRefId).IsRequired(false);
             //modelBuilder.Entity<Found_Animal>().HasMany(c => c.Comments).WithOne(f => f.Found_Animal).OnDelete(DeleteBehavior.Cascade);
-           // modelBuilder.Entity<Comments>().HasOne(f => f.Found_Animal).WithMany(c => c.Comments).OnDelete(DeleteBehavior.Cascade).HasForeignKey(e => e.Found_AnimalRefId);
+            // modelBuilder.Entity<Comments>().HasOne(f => f.Found_Animal).WithMany(c => c.Comments).OnDelete(DeleteBehavior.Cascade).HasForeignKey(e => e.Found_AnimalRefId);
             //modelBuilder.Entity<Found_Animal>().HasMany<Comments>(c => c.C).WithOne();
         }
     }

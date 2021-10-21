@@ -14,6 +14,7 @@ using Net5.JWT.Models;
 using Net5.JWT.Repositories;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,8 +34,13 @@ namespace Net5.JWT
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers().AddNewtonsoftJson();
-            services.AddDbContext<ApiContext>(opt => opt.UseMySQL(Configuration.GetConnectionString("Default")));
+            services.AddControllers();
+            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
+            builder.DataSource = "serverforlearning.database.windows.net";
+            builder.UserID = "ServerAdministrator";
+            builder.Password = "Slibinukas1634";
+            builder.InitialCatalog = "found_animal";
+            services.AddDbContext<ApiContext>(opt => opt.UseSqlServer(builder.ConnectionString));
             services.AddScoped<IRepository, Repository>();
 
             var key = Encoding.ASCII.GetBytes(Settings.Secret);

@@ -1,10 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
-using MySql.EntityFrameworkCore.Metadata;
 
 namespace Net5.JWT.Migrations
 {
-    public partial class Create : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,8 +12,8 @@ namespace Net5.JWT.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Role = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: true)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Role = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -26,13 +25,13 @@ namespace Net5.JWT.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    ShelterName = table.Column<string>(type: "varchar(80)", maxLength: 80, nullable: false),
-                    Address = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
-                    Email = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
-                    Phone = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: false),
-                    Description = table.Column<string>(type: "text", maxLength: 8000, nullable: false),
-                    ShelterImage = table.Column<string>(type: "text", maxLength: 8000, nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ShelterName = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Phone = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", maxLength: 8000, nullable: false),
+                    ShelterImage = table.Column<string>(type: "nvarchar(max)", maxLength: 8000, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -44,10 +43,10 @@ namespace Net5.JWT.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Username = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false),
-                    Email = table.Column<string>(type: "varchar(767)", nullable: false),
-                    Password = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false),
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Username = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     RoleRefId = table.Column<int>(type: "int", maxLength: 255, nullable: false)
                 },
                 constraints: table =>
@@ -66,16 +65,23 @@ namespace Net5.JWT.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Title = table.Column<string>(type: "varchar(15)", maxLength: 15, nullable: false),
-                    Address = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
-                    Description = table.Column<string>(type: "text", maxLength: 8000, nullable: false),
-                    ImagePath = table.Column<string>(type: "text", maxLength: 5000, nullable: true),
-                    UserRefId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", maxLength: 8000, nullable: false),
+                    ImagePath = table.Column<string>(type: "nvarchar(max)", maxLength: 5000, nullable: true),
+                    UserRefId = table.Column<int>(type: "int", nullable: false),
+                    ShelterRefId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Found_Animals", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Found_Animals_Shelters_ShelterRefId",
+                        column: x => x.ShelterRefId,
+                        principalTable: "Shelters",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Found_Animals_Users_UserRefId",
                         column: x => x.UserRefId,
@@ -89,9 +95,9 @@ namespace Net5.JWT.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Date = table.Column<DateTime>(type: "datetime", nullable: false),
-                    Comment = table.Column<string>(type: "text", nullable: false),
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Comment = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     Found_AnimalRefId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -110,6 +116,11 @@ namespace Net5.JWT.Migrations
                 name: "IX_Comments_Found_AnimalRefId",
                 table: "Comments",
                 column: "Found_AnimalRefId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Found_Animals_ShelterRefId",
+                table: "Found_Animals",
+                column: "ShelterRefId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Found_Animals_UserRefId",
@@ -134,10 +145,10 @@ namespace Net5.JWT.Migrations
                 name: "Comments");
 
             migrationBuilder.DropTable(
-                name: "Shelters");
+                name: "Found_Animals");
 
             migrationBuilder.DropTable(
-                name: "Found_Animals");
+                name: "Shelters");
 
             migrationBuilder.DropTable(
                 name: "Users");

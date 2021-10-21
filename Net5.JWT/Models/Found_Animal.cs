@@ -11,6 +11,7 @@ namespace Net5.JWT.Models
     public class Found_Animal
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [Required]

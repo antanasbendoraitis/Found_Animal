@@ -19,7 +19,7 @@ namespace Net5.JWT.Controllers
 {
     [Route("api/animals")]
     [ApiController]
-    public class AnimalController : Controller
+    public class AnimalController : ControllerBase
     {
         private readonly IRepository Repository;
         private readonly IWebHostEnvironment hostEnvironment;

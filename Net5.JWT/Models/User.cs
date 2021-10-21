@@ -9,6 +9,7 @@ namespace Net5.JWT.Models
     {
         [Key]
         [Newtonsoft.Json.JsonProperty("id")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [Required]
